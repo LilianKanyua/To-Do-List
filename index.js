@@ -1,4 +1,8 @@
-document.getElementById('task-table').addEventListener('create',async function(event){
+// let  taskTable = document.getElementById("task-table");
+// let newTaskInput = document.getElementById("new-task");
+
+
+document.getElementById('task-table').addEventListener('click',async function(event){
     event.preventDefault();
     let  addedTask= document.getElementById('new-task').value;
     let data ={
@@ -6,6 +10,7 @@ document.getElementById('task-table').addEventListener('create',async function(e
     
     };
     console.log({data})
+
     let result = await fetch('https://dummyjson.com/todos/add',{
     method: 'POST',
     headers:{
@@ -26,6 +31,34 @@ let success = document.getElementById('success');
 result.id? success.innerHTML='New task successfully added': success.innerHTML= 'Task not added.'
 
 
+});
+// let taskTable = document.getElementById("task-table");
+
+let taskTable = document.getElementById("task-table");
+
+// Delete a task when the "Delete" button is clicked
+taskTable.addEventListener("click", function(event) {
+  // Check if the clicked element is a "Delete" button
+  if (event.target.type === "delete") {
+    // Get the ID of the task to delete
+    var todoId = event.target.parentNode.id;
+
+    // Send a DELETE request to remove the task from the server
+    fetch(`https://dummyjson.com/todos/${todoId}`, {
+      method: "DELETE"
+    })
+      .then(response => {
+        if (response.ok) {
+          // Remove the task from the task table
+          let todoItem = document.getElementById(todoId);
+          todoItem.remove();
+          console.log("Task deleted successfully.");
+        } else {
+          console.error("Error deleting task");
+        }
+      })
+      .catch(error => console.error(error));
+  }
 });
 // const addTask = (description) => {
 //     // Create a new JSON object.
